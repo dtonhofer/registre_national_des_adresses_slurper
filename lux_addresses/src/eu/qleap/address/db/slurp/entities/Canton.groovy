@@ -1,14 +1,8 @@
 package eu.qleap.address.db.slurp.entities;
 
-import java.io.Reader;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
-
-import eu.qleap.address.db.slurp.helpers.ParsingHelp;
-import eu.qleap.address.db.slurp.helpers.ResourceHelp;
-import eu.qleap.address.db.slurp.resources.Hook;
+import eu.qleap.address.db.slurp.helpers.ParsingHelp
+import eu.qleap.address.db.slurp.helpers.ResourceHelp
+import eu.qleap.address.db.slurp.main.HookLocation
 
 /* 34567890123456789012345678901234567890123456789012345678901234567890123456789
  * *****************************************************************************
@@ -131,9 +125,9 @@ class Canton {
      * Open the resource and read entities
      */
 
-    static List<Canton> makeEntitiesFromResource(TimeZone tz) {
+    static List<Canton> makeEntitiesFromResource(Class hook, TimeZone tz) {
         assert tz != null
-        String txt = ResourceHelp.slurpResource(Hook.class, "CANTON", "ISO-8859-1")
+        String txt = ResourceHelp.slurpResource(hook, "CANTON", "ISO-8859-1")
         (new StringReader(txt)).withReader { reader ->
             return readEntities(reader, tz)
         }
@@ -145,7 +139,7 @@ class Canton {
 
     static void main(def argv) {
         def tz = TimeZone.getTimeZone("Europe/Luxembourg")
-        List<Canton> cantons = makeEntitiesFromResource(tz)
+        List<Canton> cantons = makeEntitiesFromResource(HookLocation.hook, tz)
         cantons.each {
             System.out << it << "\n"
         }

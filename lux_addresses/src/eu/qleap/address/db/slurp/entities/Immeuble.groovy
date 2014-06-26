@@ -1,16 +1,8 @@
 package eu.qleap.address.db.slurp.entities
 
-import java.io.Reader;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
-
-import org.apache.ivy.plugins.repository.ResourceHelper;
-
-import eu.qleap.address.db.slurp.helpers.ParsingHelp;
-import eu.qleap.address.db.slurp.helpers.ResourceHelp;
-import eu.qleap.address.db.slurp.resources.Hook;
+import eu.qleap.address.db.slurp.helpers.ParsingHelp
+import eu.qleap.address.db.slurp.helpers.ResourceHelp
+import eu.qleap.address.db.slurp.main.HookLocation
 
 /* 34567890123456789012345678901234567890123456789012345678901234567890123456789
  * *****************************************************************************
@@ -268,13 +260,13 @@ class Immeuble {
      * Open the resource and read entities
      */
 
-    static List<Immeuble> makeEntitiesFromResource(TimeZone tz) {
+    static List<Immeuble> makeEntitiesFromResource(Class hook, TimeZone tz) {
         assert tz != null
         Map mapByImmoId = new TreeMap() // autosort by id
         // note that one MUST read those "without désignation" first
         [false, true].each { boolean avecDésignation ->
             String resourceName = avecDésignation ? "IMMDESIG" : "IMMEUBLE"
-            String txt = ResourceHelp.slurpResource(Hook.class, resourceName, "ISO-8859-1")
+            String txt = ResourceHelp.slurpResource(hook, resourceName, "ISO-8859-1")
             (new StringReader(txt)).withReader { reader ->
                 readEntitiesIntoMap(reader, tz, avecDésignation, mapByImmoId)
             }
@@ -291,7 +283,7 @@ class Immeuble {
 
     static void main(def argv) {
         def tz = TimeZone.getTimeZone("Europe/Luxembourg")
-        List<Immeuble> immos = makeEntitiesFromResource(tz)
+        List<Immeuble> immos = makeEntitiesFromResource(HookLocation.hook, tz)
         immos.each {
             System.out << it << "\n"
         }

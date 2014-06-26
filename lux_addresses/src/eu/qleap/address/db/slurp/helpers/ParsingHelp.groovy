@@ -1,16 +1,5 @@
 package eu.qleap.address.db.slurp.helpers
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader
-import java.net.URL;
-import java.util.Calendar
-import java.util.Date
-import java.util.List
-import java.util.TimeZone
-
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
 /* 34567890123456789012345678901234567890123456789012345678901234567890123456789
  * *****************************************************************************

@@ -1,14 +1,8 @@
 package eu.qleap.address.db.slurp.entities
 
-import java.io.Reader;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
-
-import eu.qleap.address.db.slurp.helpers.ParsingHelp;
-import eu.qleap.address.db.slurp.helpers.ResourceHelp;
-import eu.qleap.address.db.slurp.resources.Hook;
+import eu.qleap.address.db.slurp.helpers.ParsingHelp
+import eu.qleap.address.db.slurp.helpers.ResourceHelp
+import eu.qleap.address.db.slurp.main.HookLocation
 
 /* 34567890123456789012345678901234567890123456789012345678901234567890123456789
  * *****************************************************************************
@@ -118,23 +112,11 @@ class AliasLocalité implements Comparable<AliasLocalité> {
      * Open the resource and read entities
      */
 
-    static List<AliasLocalité> makeEntitiesFromResource(TimeZone tz) {
+    static List<AliasLocalité> makeEntitiesFromResource(Class hook, TimeZone tz) {
         assert tz != null
-        String txt = ResourceHelp.slurpResource(Hook.class, "ALIAS.LOCALITE", "ISO-8859-1")
+        String txt = ResourceHelp.slurpResource(hook, "ALIAS.LOCALITE", "ISO-8859-1")
         (new StringReader(txt)).withReader { reader ->
             return readEntities(reader, tz)
-        }
-    }
-
-    /**
-     * Test run
-     */
-
-    static void main(def argv) {
-        def tz = TimeZone.getTimeZone("Europe/Luxembourg")
-        List<AliasLocalité> aliasLocalités = makeEntitiesFromResource(tz)
-        aliasLocalités.each {
-            System.out << it << "\n"
         }
     }
     
@@ -146,6 +128,18 @@ class AliasLocalité implements Comparable<AliasLocalité> {
     public int compareTo(AliasLocalité o) {
         assert o 
         return this.numéroSeq <=> o.numéroSeq
+    }
+
+    /**
+     * Test run
+     */
+
+    static void main(def argv) {
+        def tz = TimeZone.getTimeZone("Europe/Luxembourg")         
+        List<AliasLocalité> aliasLocalités = makeEntitiesFromResource(HookLocation.hook, tz)
+        aliasLocalités.each {
+            System.out << it << "\n"
+        }
     }
 
 }

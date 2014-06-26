@@ -1,15 +1,8 @@
 package eu.qleap.address.db.slurp.entities
 
-import java.io.Reader;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
-
-import eu.qleap.address.db.slurp.helpers.ParsingHelp;
-import eu.qleap.address.db.slurp.helpers.ResourceHelp;
-import eu.qleap.address.db.slurp.resources.Hook;
+import eu.qleap.address.db.slurp.helpers.ParsingHelp
+import eu.qleap.address.db.slurp.helpers.ResourceHelp
+import eu.qleap.address.db.slurp.main.HookLocation
 
 /* 34567890123456789012345678901234567890123456789012345678901234567890123456789
  * *****************************************************************************
@@ -148,9 +141,9 @@ class Commune {
      * Open the resource and read entities
      */
 
-    static List<Commune> makeEntitiesFromResource(TimeZone tz) {
+    static List<Commune> makeEntitiesFromResource(Class hook, TimeZone tz) {
         assert tz != null
-        String txt = ResourceHelp.slurpResource(Hook.class, "COMMUNE", "ISO-8859-1")
+        String txt = ResourceHelp.slurpResource(hook, "COMMUNE", "ISO-8859-1")
         (new StringReader(txt)).withReader { reader ->
             return readEntities(reader, tz)
         }
@@ -162,7 +155,7 @@ class Commune {
 
     static void main(def argv) {
         def tz = TimeZone.getTimeZone("Europe/Luxembourg")
-        List<Commune> communes = makeEntitiesFromResource(tz)
+        List<Commune> communes = makeEntitiesFromResource(HookLocation.hook, tz)
         communes.each {
             System.out << it << "\n"
         }

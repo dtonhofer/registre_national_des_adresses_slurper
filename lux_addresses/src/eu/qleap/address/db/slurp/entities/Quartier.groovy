@@ -1,14 +1,8 @@
 package eu.qleap.address.db.slurp.entities;
 
-import java.io.Reader;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
-
-import eu.qleap.address.db.slurp.helpers.ParsingHelp;
-import eu.qleap.address.db.slurp.helpers.ResourceHelp;
-import eu.qleap.address.db.slurp.resources.Hook;
+import eu.qleap.address.db.slurp.helpers.ParsingHelp
+import eu.qleap.address.db.slurp.helpers.ResourceHelp
+import eu.qleap.address.db.slurp.main.HookLocation
 
 /* 34567890123456789012345678901234567890123456789012345678901234567890123456789
  * *****************************************************************************
@@ -127,23 +121,11 @@ class Quartier implements Comparable<Quartier> {
      * Open the resource and read entities
      */
 
-    static List<Quartier> makeEntitiesFromResource(TimeZone tz) {
+    static List<Quartier> makeEntitiesFromResource(Class hook, TimeZone tz) {
         assert tz != null
-        String txt = ResourceHelp.slurpResource(Hook.class, "QUARTIER", "ISO-8859-1")
+        String txt = ResourceHelp.slurpResource(HookLocation.hook, "QUARTIER", "ISO-8859-1")
         (new StringReader(txt)).withReader { reader ->
             return readEntities(reader, tz)
-        }
-    }
-
-    /**
-     * Test run
-     */
-
-    static void main(def argv) {
-        def tz = TimeZone.getTimeZone("Europe/Luxembourg")
-        List<Quartier> quartiers = makeEntitiesFromResource(tz)
-        quartiers.each {
-            System.out << it << "\n"
         }
     }
 
@@ -156,4 +138,18 @@ class Quartier implements Comparable<Quartier> {
         assert o
         return this.nom <=> o.nom
     }
+    
+    /**
+     * Test run
+     */
+
+    static void main(def argv) {
+        def tz = TimeZone.getTimeZone("Europe/Luxembourg")
+        List<Quartier> quartiers = makeEntitiesFromResource(HookLocation.hook, tz)
+        quartiers.each {
+            System.out << it << "\n"
+        }
+    }
+
+
 }

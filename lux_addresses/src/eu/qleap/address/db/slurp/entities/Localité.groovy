@@ -1,14 +1,8 @@
 package eu.qleap.address.db.slurp.entities
 
-import java.io.Reader;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
-
-import eu.qleap.address.db.slurp.helpers.ParsingHelp;
-import eu.qleap.address.db.slurp.helpers.ResourceHelp;
-import eu.qleap.address.db.slurp.resources.Hook;
+import eu.qleap.address.db.slurp.helpers.ParsingHelp
+import eu.qleap.address.db.slurp.helpers.ResourceHelp
+import eu.qleap.address.db.slurp.main.HookLocation
 
 /* 34567890123456789012345678901234567890123456789012345678901234567890123456789
  * *****************************************************************************
@@ -266,9 +260,9 @@ class Localité {
      * Open the resource and read entities
      */
 
-    static List<Localité> makeEntitiesFromResource(TimeZone tz) {
+    static List<Localité> makeEntitiesFromResource(Class hook, TimeZone tz) {
         assert tz != null
-        String txt = ResourceHelp.slurpResource(Hook.class, "LOCALITE", "ISO-8859-1")
+        String txt = ResourceHelp.slurpResource(hook, "LOCALITE", "ISO-8859-1")
         (new StringReader(txt)).withReader { reader ->
             return readEntities(reader, tz)
         }
@@ -280,7 +274,7 @@ class Localité {
 
     static void main(def argv) {
         def tz = TimeZone.getTimeZone("Europe/Luxembourg")
-        List<Localité> localités = makeEntitiesFromResource(tz)
+        List<Localité> localités = makeEntitiesFromResource(HookLocation.hook, tz)
         localités.each {
             System.out << it << "\n"
         }

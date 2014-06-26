@@ -83,8 +83,13 @@ class RunAll {
     }
 
     static void main(def argv) {
-        // Load data from resources in one step        
-        NationalTree tc = new NationalTree(true)        
+        //
+        // Load data from resources in one step
+        //        
+        NationalTree tc = new NationalTree(HookLocation.hook, true)
+        //
+        // Printz!
+        //        
         // printLocalités(tc.localités, tc.quartiers, tc.rues)
         // printImmeubles(tc.immeubles)
         csvLocalités(tc.localités)

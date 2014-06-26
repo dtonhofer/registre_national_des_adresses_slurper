@@ -39,15 +39,15 @@ class NationalTree {
      * Constructor
      */
 
-    NationalTree(boolean printThem) {
+    NationalTree(Class hook, boolean printThem) {
         def tz = TimeZone.getTimeZone("Europe/Luxembourg")
-        districts = Collections.unmodifiableList(makeDistricts(tz, printThem))
-        cantons   = Collections.unmodifiableList(makeCantons(districts,  tz, printThem))
-        communes  = Collections.unmodifiableList(makeCommunes(cantons,  tz, printThem))
-        localités = Collections.unmodifiableList(makeLocalités(communes, tz))
-        quartiers = Collections.unmodifiableList(makeQuartiers(localités, tz))
-        rues      = Collections.unmodifiableList(makeRues(localités, tz))
-        immeubles = Collections.unmodifiableList(makeImmeubles(rues, quartiers, tz))
+        districts = Collections.unmodifiableList(makeDistricts(hook, tz, printThem))
+        cantons   = Collections.unmodifiableList(makeCantons(hook, districts,  tz, printThem))
+        communes  = Collections.unmodifiableList(makeCommunes(hook, cantons,  tz, printThem))
+        localités = Collections.unmodifiableList(makeLocalités(hook, communes, tz))
+        quartiers = Collections.unmodifiableList(makeQuartiers(hook, localités, tz))
+        rues      = Collections.unmodifiableList(makeRues(hook, localités, tz))
+        immeubles = Collections.unmodifiableList(makeImmeubles(hook, rues, quartiers, tz))
         linkRueToQuartier(immeubles, rues, quartiers)
     }
 
@@ -55,8 +55,8 @@ class NationalTree {
      * Helper
      */
 
-    private static List<District> makeDistricts(TimeZone tz, boolean printThem) {
-        List<District> districts = District.makeEntitiesFromResource(tz)
+    private static List<District> makeDistricts(Class hook, TimeZone tz, boolean printThem) {
+        List<District> districts = District.makeEntitiesFromResource(hook, tz)
         if (printThem) {
             districts.each {
                 System.out << it << "\n"
@@ -69,8 +69,8 @@ class NationalTree {
      * Helper
      */
 
-    private static List<Canton> makeCantons(List<District> districts, TimeZone tz, boolean printThem) {
-        List<Canton> cantons = Canton.makeEntitiesFromResource(tz)
+    private static List<Canton> makeCantons(Class hook, List<District> districts, TimeZone tz, boolean printThem) {
+        List<Canton> cantons = Canton.makeEntitiesFromResource(hook, tz)
         cantons.each {  it.wireUp(districts) }
         if (printThem) {
             cantons.each {
@@ -84,8 +84,8 @@ class NationalTree {
      * Helper
      */
 
-    private static List<Commune> makeCommunes(List<Canton> cantons, TimeZone tz, boolean printThem) {
-        List<Commune> communes = Commune.makeEntitiesFromResource(tz)
+    private static List<Commune> makeCommunes(Class hook, List<Canton> cantons, TimeZone tz, boolean printThem) {
+        List<Commune> communes = Commune.makeEntitiesFromResource(hook, tz)
         communes.each { it.wireUp(cantons) }
         if (printThem) {
             communes.each {
@@ -99,8 +99,8 @@ class NationalTree {
      * Helper
      */
 
-    private static List<Localité> makeLocalités(List<Commune> communes, TimeZone tz) {
-        List<Localité> localités = Localité.makeEntitiesFromResource(tz)
+    private static List<Localité> makeLocalités(Class hook, List<Commune> communes, TimeZone tz) {
+        List<Localité> localités = Localité.makeEntitiesFromResource(hook, tz)
         localités.each {
             boolean itWorked = it.wireUp(communes)
             if (!itWorked) {
@@ -110,7 +110,7 @@ class NationalTree {
         //
         // Connect aliases to localités
         //
-        List<AliasLocalité> aliases = AliasLocalité.makeEntitiesFromResource(tz)
+        List<AliasLocalité> aliases = AliasLocalité.makeEntitiesFromResource(hook, tz)
         //
         // No need to be efficient in search (go with an n² algorithm); just make sure all the aliases are handled
         //
@@ -131,8 +131,8 @@ class NationalTree {
      * Helper
      */
 
-    private static List<Quartier> makeQuartiers(List<Localité> localités, TimeZone tz) {
-        List<Quartier> quartiers = Quartier.makeEntitiesFromResource(tz)
+    private static List<Quartier> makeQuartiers(Class hook, List<Localité> localités, TimeZone tz) {
+        List<Quartier> quartiers = Quartier.makeEntitiesFromResource(hook, tz)
         quartiers.each { it.wireUp(localités) }
     }
 
@@ -140,13 +140,13 @@ class NationalTree {
      * Helper
      */
 
-    private static List<Rue> makeRues(List<Localité> localités, TimeZone tz) {
-        List<Rue> rues = Rue.makeEntitiesFromResource(tz)
+    private static List<Rue> makeRues(Class hook, List<Localité> localités, TimeZone tz) {
+        List<Rue> rues = Rue.makeEntitiesFromResource(hook, tz)
         rues.each { it.wireUp(localités) }
         //
         // Connect aliases to rues
         //
-        List<AliasRue> aliases = AliasRue.makeEntitiesFromResource(tz)
+        List<AliasRue> aliases = AliasRue.makeEntitiesFromResource(hook, tz)
         //
         // No need to be efficient in search (go with an n² algorithm); just make sure all the aliases are handled
         //
@@ -167,8 +167,8 @@ class NationalTree {
      * Helper
      */
 
-    private static List<Immeuble> makeImmeubles(List<Rue> rues, List<Quartier> quartiers, TimeZone tz) {
-        List<Immeuble> immeubles = Immeuble.makeEntitiesFromResource(tz)
+    private static List<Immeuble> makeImmeubles(Class hook, List<Rue> rues, List<Quartier> quartiers, TimeZone tz) {
+        List<Immeuble> immeubles = Immeuble.makeEntitiesFromResource(hook, tz)
         def rueMap = [:]
         rues.each { Rue rue ->
             assert !rueMap.containsKey(rue.id)
