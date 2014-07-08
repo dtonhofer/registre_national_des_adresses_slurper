@@ -20,7 +20,7 @@ import eu.qleap.address.db.slurp.entities.Rue
  * 2013.08.XX - First version
  ******************************************************************************/
 
-class RunAll {
+class MainLoadNationalTree {
    
     static printLocalités(List<Localité> localités, List<Quartier> quartiers, List<Rue> rues) {
         localités.each { Localité loc ->
@@ -88,7 +88,7 @@ class RunAll {
         //        
         NationalTree tc = new NationalTree(HookLocation.hook, true)
         //
-        // Printz!
+        // Print!
         //        
         // printLocalités(tc.localités, tc.quartiers, tc.rues)
         // printImmeubles(tc.immeubles)
