@@ -35,5 +35,5 @@ Then run the ''eu.qleap.address.db.slurp.main.MainLoadNationalTree'' class. It c
 To do
 -----
 
-So far, there is no code to dump this data structure into a database or XML.
+So far, there is no code to dump this data structure into a database or XML, because the in-memory structure is used directly in further processing. This should be added for adequate utility.
 
