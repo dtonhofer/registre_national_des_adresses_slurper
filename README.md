@@ -15,9 +15,11 @@ http://www.act.public.lu/fr/publications/documents-techniques/specs_fichiers_adr
 
 An illustration of the same:
 
+![Initial Structure](https://raw.github.com/Q-LEAP/registre_national_des_adresses_slurper/master/images/Structure_BDD.png "Initial Structure")
 
-The present program reads the files and simplifies the structure somewhat, creating a navigable in-memory structure:
+The present program reads the files and simplifies the structure somewhat, creating a navigable in-memory structure which is simpler:
 
+![Resulting Structure](https://raw.github.com/Q-LEAP/registre_national_des_adresses_slurper/master/images/Structure_Result.png "Resulting Structure")
 
 As the contract under which the data is made available stipulates that you cannot distribute the "Registre National des Adresses", this project does not contain the data files themselves. You have to drop them into the ''eu.qleap.address.db.slurp.resources'' package, or create a new package, add the files to it and add a dummy class called ''Hook'' to that package which you then reference from the class ''eu.qleap.address.db.slurp.main.HookLocation''.
 
