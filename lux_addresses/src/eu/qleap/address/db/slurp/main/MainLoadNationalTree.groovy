@@ -91,8 +91,8 @@ class MainLoadNationalTree {
         // Print!
         //        
         // printLocalités(tc.localités, tc.quartiers, tc.rues)
-        // printImmeubles(tc.immeubles)
-        csvLocalités(tc.localités)
+        printImmeubles(tc.immeubles)
+        // csvLocalités(tc.localités)
         System.out << "DONE\n"
     }
 }
