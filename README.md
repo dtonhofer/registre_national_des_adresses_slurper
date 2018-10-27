@@ -2,11 +2,16 @@
 
 ## Status
 
-- Frozen in time and unmaintained!
+- Initially released 15 Oct 2013.
+- Frozen in time and unmaintained but may be of interest to some.
 
 ## What is it
 
-Code to read the "Registre National des Adresses" of Luxembourg into a memory structure.
+This is simple application code able to read the freely available "Registre National des Adresses" of Luxembourg into a memory structure. It does nothing further, so it is meant to be used for people who know how to develop and want to process that dataset. It was written for a project of Q-LEAP S.A. in 2013.
+
+The code is old-ish but as long as the table structure of the "Registre National des Addresses" hasn't changed, it should still work.
+
+### Input data
 
 "Administration du Cadastre Luxembourg" makes availabe the database of addresses of Luxembourg on request.
 
